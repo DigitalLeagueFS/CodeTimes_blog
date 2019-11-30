@@ -20,5 +20,12 @@
   <%= @user.bio %>
 </p>
 
+
+<p>
+  <strong>Avatar:</strong>
+  <br>
+  <%= image_tag @user.avatar %>
+</p>
+
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
