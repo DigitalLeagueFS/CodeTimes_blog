@@ -33,7 +33,17 @@ ActiveRecord::Schema.define(version: 2019_12_02_215110) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "attachments", force: :cascade do |t|
+  create_table "attachm
+
+
+
+
+
+
+
+
+
+ents", force: :cascade do |t|
     t.string "type"
     t.string "link"
     t.integer "post_id", null: false
