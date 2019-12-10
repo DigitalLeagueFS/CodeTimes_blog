@@ -13,31 +13,31 @@
 
   <div class="field">
     <%= form.label :login %>
-    <%= form.text_field :login %>
+    <%= form.text_field :login, :class=>"form-control" %>
   </div>
 
   <div class="field">
     <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, :class=>"form-control", :id=>"inlineFormInputName"%>
   </div>
 
   <div class="field">
     <%= form.label :Avatar %>
-    <%= form.file_field :avatar %>
+    <%= form.file_field :avatar, :class=>"form-control-file", :id=>"exampleFormControlFile1" %>
   </div>
 
 
   <div class="field">
     <%= form.label :password %>
-    <%= form.text_field :password %>
+    <%= form.text_field :password, :class=>"form-control", :id=>"inputPassword" %>
   </div>
 
   <div class="field">
     <%= form.label :bio %>
-    <%= form.text_field :bio %>
+    <%= form.text_field :bio, :class=>"form-control" %>
   </div>
-
+<br>
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit :class => 'btn btn-info' %>
   </div>
 <% end %>

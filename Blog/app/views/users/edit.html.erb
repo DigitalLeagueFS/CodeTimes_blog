@@ -1,6 +1,7 @@
 <h1>Editing User</h1>
-
+<div class="whole-content edit" style="width: 20%">
 <%= render 'form', user: @user %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
+<br>
+<%= link_to 'Show', @user, :class => 'btn btn-info' %> |
+<%= link_to 'Back', users_path, :class => 'btn btn-info' %>
+</div>
