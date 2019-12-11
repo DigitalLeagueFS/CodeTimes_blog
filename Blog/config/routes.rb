@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :users
+  devise_for :models
   resources :subscriptions
   resources :tags_posts
   resources :likes
