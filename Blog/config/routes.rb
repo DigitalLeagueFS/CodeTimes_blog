@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'main/index'
+  root 'main#index'
   devise_for :users
   devise_for :models
   resources :subscriptions
