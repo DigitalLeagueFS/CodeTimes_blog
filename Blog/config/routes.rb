@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  get 'main/index'
-  root 'main#index'
+  #get 'main/index'
+  #root 'main#index'
+  root 'users#index'
   devise_for :users
-  devise_for :models
+  # devise_for :models
   resources :subscriptions
   resources :tags_posts
   resources :likes
