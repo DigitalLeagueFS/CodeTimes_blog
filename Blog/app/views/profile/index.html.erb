@@ -1,0 +1,34 @@
+<%= link_to 'Edit profile info', edit_user_path(@user), :class=>"btn btn-outline-info" %>
+
+<div class="intro">
+  <div class="profile-img"><%= image_tag(@user.avatar.attached? ? @user.avatar : "/assets/images/user.png", size: "100x100") %></div>
+  <h2><b><%= @user.name %></b></h2>
+  <h4 class="font-yellow"><%= @user.bio %></h4>
+  <ul class="information margin-tb-30">
+    <li><b>EMAIL : </b><%= @user.email %></li>
+  </ul>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+      <% @posts.each do |post| %>
+
+          <div class="post-preview">
+            <%= link_to post.title, post %>
+          <!--<h2 class="post-title">
+            <%= post.title %>
+          </h2>--->
+          <h3 class="post-subtitle">
+            <%= post.content %>
+          </h3>
+        </a>
+        <p class="post-meta">Posted by <%= @user.name %> on <%= post.created_at %></p>
+            <%= link_to 'Edit', edit_post_path(post) %>
+            <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </div>
+      <% end %>
+      <hr>
+    </div>
+  </div>
+</div>
