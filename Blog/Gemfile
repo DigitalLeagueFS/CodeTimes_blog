@@ -56,3 +56,4 @@ gem 'jquery-rails'
 
 #authentication
 gem 'devise'
+gem 'rack-cors'
