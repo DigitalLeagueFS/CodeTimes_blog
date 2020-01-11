@@ -3,8 +3,6 @@ class MainController < ApplicationController
    @posts=Post.all
    @tags=Tag.all
    @categories=Category.all
-
-
   end
 
 
