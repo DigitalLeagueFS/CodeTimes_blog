@@ -6,3 +6,5 @@ export function Button({text, ...props}) {
     )
 
 }
+
+export  default  Button;

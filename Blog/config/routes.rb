@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  post 'auth_user',to: 'authentication#authenticate_user'
+  get 'auth',to:'application#authenticate_request!'
+  get 'home',to: 'home#index'
   #get 'profile/index'
   get '/profile', to: 'profile#index'
   get 'main/index'
@@ -7,8 +10,6 @@ Rails.application.routes.draw do
 
 
   devise_for :users
-  devise_for :models
-<<<<<<< HEAD
 
     resources :subscriptions
     resources :tags_posts

@@ -5,22 +5,26 @@ import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
- function Home() {
+ function Home(props) {
      let [posts, setPosts]=useState([])
-     async function getAll() {
-        let res = await api.posts.fetchAll();
-        setPosts(res.data);
-        return res;
-    }
+         useEffect(() => {
+             console.log(props.status)
+             if(props.status===204) {
+                 getAll();
+             }
+         }, [props.status]);
 
-    useEffect(()=> {
-        getAll();
-    },[]);
+
+     async function getAll() {
+             let res = await api.posts.fetchAll();
+             setPosts(res.data);
+             return res;
+         }
 
 
     return (
+
         <div>
-            <LayoutWrapper/>
             <div className={"d-flex flex-row flex-wrap center-block"}>
             {
                 posts.map(function (post, i) {

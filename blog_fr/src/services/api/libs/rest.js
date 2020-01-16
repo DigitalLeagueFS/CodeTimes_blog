@@ -2,7 +2,7 @@ import XhrClient from '../configuration/client';
 
 export default ({ path, model }) => ({
     fetchAll: (params) =>
-        XhrClient.get(path, { params: { ...params } }),
+        XhrClient.get(path, {params: {...params}}),
     show: ({ id }) =>
         XhrClient.get(`${path}/${id}`),
     create: ({ ...fields }) =>

@@ -1,6 +1,18 @@
 module Api
 class PostsController < ApiController
 
+  before_action :authenticate_request!
+
+  def index
+    pp params
+    if params[:only_my] then
+      @collection=Post.where(user_id:@current_user.id)
+    else
+      @collection=resource_class.all
+    end
+    render json: @collection.as_json(as_json_collection)
+  end
+
   private
 
   def resource_class
@@ -18,6 +30,10 @@ class PostsController < ApiController
         }
     }
   end
+
+
+
+
 
 
 
