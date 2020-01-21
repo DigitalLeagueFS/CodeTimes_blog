@@ -13,6 +13,29 @@ class PostsController < ApiController
     render json: @collection.as_json(as_json_collection)
   end
 
+  def create
+    @resource=resource_class.new(resource_params)
+    pp params
+    params.require(:post).permit(:user_id,:title, :content, :date_of_publication   ,tags:[])
+    @tag=params[:post][:tags]
+
+    @post_id=Post.last.id
+    for value in @tag
+      @t=Tag.find_by_name(value)
+      if @t
+        {}
+      else
+        @t=Tag.create(name:value)
+      end
+      TagsPost.create(tag_id:@t.id, post_id:Post.last.id)
+      end
+    if @resource.save
+      render json: @resource.as_json(as_json_resource)
+    else
+      render json: {error:@resource.errors},status: :unprocessable_entity
+    end
+  end
+
   private
 
   def resource_class
@@ -20,7 +43,7 @@ class PostsController < ApiController
   end
 
   def resource_params
-    params.require(:post).permit(:user_id,:title, :content, :date_of_publication)
+    params.require(:post).permit(:user_id,:title, :content, :date_of_publication )
   end
 
   def as_json_collection
@@ -30,13 +53,6 @@ class PostsController < ApiController
         }
     }
   end
-
-
-
-
-
-
-
 
 
 end
