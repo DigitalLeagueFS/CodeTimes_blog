@@ -28,6 +28,7 @@ function LoginForm(props) {
             })
             .then(resp=>resp.json())
             .then(data=>{
+                localStorage.setItem("id",data.user.id)
                 localStorage.setItem("token",data.auth_token)
                 localStorage.setItem("name",data.user.name)
                 props.handleLogin(data.user)

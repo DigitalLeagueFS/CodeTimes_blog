@@ -7,6 +7,7 @@ import SignInForm from "./components/form/SignInForm";
 import LoginForm from "./components/form/LoginForm";
 import Button from "./components/form/Button";
 import Room from "./pages/room/index"
+import NewPost from "./pages/posts/new";
 
 import{
   BrowserRouter as Router,
@@ -85,6 +86,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={ (()=>(<Home status={status} />)) } />
         <Route path="/components/SignInForm" />
+        <Route path="/NewPost" component={(()=>(<NewPost />))}  />
         <Route path="/Room" component={(()=>(<Room />))} />
       </Switch>
     </div>
