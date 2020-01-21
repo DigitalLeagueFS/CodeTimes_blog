@@ -46,8 +46,10 @@ export default function NewPost() {
                 {
                     tagState.map((Tag,index)=>{
                         return(<div>
-                                <input name={`tags[${index}]`}  key={index} ref={register({ required: true })}  />
-                            </div>
+                                <input name={`tags_posts_attributes[${index}].tag_attributes.name`}  key={index} ref={register({ required: true })}  />
+                                <input name={`tags_posts_attributes[${index}].tag_attributes.category_id`}  key={`c_${index}`} value={1} ref={register({ required: true })} style={{display: 'hidden'}}  />
+
+                </div>
                         )
                     })
                 }
