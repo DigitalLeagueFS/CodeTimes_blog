@@ -3,11 +3,17 @@ import api from "../../services/api"
 
 function Room(){
     let [posts, setPosts]=useState([])
+    let [user,setUser]=useState([])
+
     async function getAll() {
+        let userData=await api.users.fetchAll({only_my:true});
+        setUser(userData.data)
+        console.log(userData.data)
         let res = await api.posts.fetchAll({only_my:true});
         setPosts(res.data);
         return res;
     }
+
 
     useEffect(()=> {
         getAll();
@@ -17,6 +23,12 @@ function Room(){
     return (
         <div>
             <p>hee</p>
+            <div className={"user"}>
+                    <p>{user.avatar}</p>
+                    <p>{user.name}</p>
+                    <p>{user.bio}</p>
+                    <p>{user.login}</p>
+            </div>
             <div className={"d-flex flex-row flex-wrap center-block"}>
                 {
                     posts.map(function (post, i) {
@@ -33,6 +45,7 @@ function Room(){
 
                         )
                     })
+
                 }
             </div>
         </div>

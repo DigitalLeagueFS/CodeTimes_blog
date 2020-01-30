@@ -25,7 +25,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :posts, except: [:new, :edit]
+    resources :likes, except: [:new, :edit]
     resources :users, except: [:new, :edit]
+    resources :categories, except: [:new, :edit]
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

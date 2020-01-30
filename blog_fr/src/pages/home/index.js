@@ -4,6 +4,7 @@ import api from "../../services/api";
 import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ShowPost from "../posts/show";
 
  function Home(props) {
      let [posts, setPosts]=useState([])
@@ -31,6 +32,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
                     return (
                         <div className={"card flex-md-row box-shadow h-md-250"}>
                             <div className={"card-body d-flex flex-column align-items-start"}>
+                                <Link to={"ShowPost/"+post.id} >go</Link>
                             <p>{post.user.name}</p>
                             <h1>{post.title}</h1>
                             <p className={"card-text mb-auto"}>{post.content}</p>

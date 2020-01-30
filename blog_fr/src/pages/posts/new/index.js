@@ -23,20 +23,44 @@ export default function NewPost() {
     const onSubmit = data => {
         (async function createPost() {
 
+            let found=false
+            let index
+            let cat=await api.categories.fetchAll();
+            cat.data.map(function(category,i){
+                if(category.name===data.category) {
+                    index = category.id
+                    found=true
+                }
+            })
+            if(found===true)
+                data.category_id=index
+            else {
+                let category=await api.categories.create({name:data.category})
+                index=category.id
+                data.category_id=index
+            }
+
+
+            data.images=files
+            console.log(data)
 
             let res = await api.posts.create(data);
             console.log(res.data);
             if(res.data.id){
-                window.location.href = '/users';
+            //    window.location.href = '/';
             }
         })();
     }
 
+    let [files,setFiles]=useState([])
+
     let date= new Date()
+
+
 
     return (
         <>
-            <h1>New User</h1>
+            <h1>New Post</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="title">Title *</label>
                 <input name="title" ref={register({ required: true })} />
@@ -51,6 +75,10 @@ export default function NewPost() {
                         )
                     })
                 }
+                <label htmlFor="category">Category *</label>
+                <input name="category" ref={register({ required: true })} />
+                {errors.name && <span>This field is required</span>}
+                <br/>
 
 
                 <label htmlFor="content">Content *</label>
@@ -61,6 +89,8 @@ export default function NewPost() {
                 {errors.date && <span>This field is required</span>}
                 <br/>
 
+                <p>Добавить файлы</p>
+                <input type={"file"} onChange={e=>setFiles(e.target.files)} multiple="multiple" name="images[]" ref={register({ })}/>
 
                 <input name="user_id" hidden value={localStorage.getItem("id")} type={'text'} ref={register({ required: true })} />
 

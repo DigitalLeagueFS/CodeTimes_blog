@@ -15,7 +15,9 @@ module Api
 
     def create
       @resource=resource_class.new(resource_params)
-      if @resource.save
+      logger.error
+      if @resource.save!
+
         render json: @resource.as_json(as_json_resource)
       else
         render json: {error:@resource.errors},status: :unprocessable_entity

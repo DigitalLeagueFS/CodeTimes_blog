@@ -1,9 +1,11 @@
 import users from './users';
-import companies from './companies';
 import posts from './posts';
+import categories from "./categories";
+import likes from "./likes";
 
 export default {
     users,
-    companies,
     posts,
+    categories,
+    likes
 };

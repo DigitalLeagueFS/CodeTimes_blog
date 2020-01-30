@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_11_175846) do
+ActiveRecord::Schema.define(version: 2020_01_30_095512) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -62,11 +62,10 @@ ActiveRecord::Schema.define(version: 2020_01_11_175846) do
 
   create_table "likes", force: :cascade do |t|
     t.integer "post_id", null: false
-    t.integer "comment_id", null: false
+    t.integer "comment_id"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["comment_id"], name: "index_likes_on_comment_id"
     t.index ["post_id"], name: "index_likes_on_post_id"
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
@@ -80,6 +79,7 @@ ActiveRecord::Schema.define(version: 2020_01_11_175846) do
     t.integer "comments_count"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "category_id", null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -92,10 +92,8 @@ ActiveRecord::Schema.define(version: 2020_01_11_175846) do
 
   create_table "tags", force: :cascade do |t|
     t.string "name"
-    t.integer "category_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_tags_on_category_id"
   end
 
   create_table "tags_posts", force: :cascade do |t|
@@ -132,12 +130,11 @@ ActiveRecord::Schema.define(version: 2020_01_11_175846) do
   add_foreign_key "comments", "comments"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
-  add_foreign_key "likes", "comments"
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
+  add_foreign_key "posts", "categories"
   add_foreign_key "posts", "users"
   add_foreign_key "subscriptions", "users"
-  add_foreign_key "tags", "categories"
   add_foreign_key "tags_posts", "posts"
   add_foreign_key "tags_posts", "tags"
 end

@@ -8,6 +8,7 @@ import LoginForm from "./components/form/LoginForm";
 import Button from "./components/form/Button";
 import Room from "./pages/room/index"
 import NewPost from "./pages/posts/new";
+import ShowPost from "./pages/posts/show"
 
 import{
   BrowserRouter as Router,
@@ -15,6 +16,7 @@ import{
     Route,
     Link
 } from "react-router-dom";
+
 
 function App() {
   const [user,setUser]=useState({})
@@ -88,6 +90,7 @@ function App() {
         <Route path="/components/SignInForm" />
         <Route path="/NewPost" component={(()=>(<NewPost />))}  />
         <Route path="/Room" component={(()=>(<Room />))} />
+        <Route path="/ShowPost/:id" component={ShowPost} />
       </Switch>
     </div>
       </Router>
