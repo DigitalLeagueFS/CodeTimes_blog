@@ -9,6 +9,7 @@ class PostsController < ApiController
     pp params
     if params[:only_my] then
       @collection=Post.where(user_id:@current_user.id)
+
     else
       @collection=resource_class.all
     end
@@ -27,6 +28,16 @@ class PostsController < ApiController
     end
   end
 
+  def deleteImage
+    pp params
+    @post=Post.find(params[:post][:post_id].to_i)
+    images=@post.avatars
+    deleteImage=images.delete_at(params[:post][:avatar_id].to_i)
+    deleteImage.try(:remove!)
+    @post.avatars=images
+    @post.save
+  end
+
   private
 
   def resource_class
@@ -34,7 +45,7 @@ class PostsController < ApiController
   end
 
   def resource_params
-    params.require(:post).permit(:user_id,:title,:category_id, :content, :date_of_publication,{avatars: []}, tags_posts_attributes: [tag_attributes: [:name]])
+    params.require(:post).permit(:user_id,:title,:category_id, :content, :date_of_publication,{avatars: []}, tags_posts_attributes: [tag_attributes: [:id,:name]])
   end
 
   def as_json_collection
@@ -55,7 +66,7 @@ class PostsController < ApiController
         include:{
             like:{only:[:user_id]},
             category:{only:[:name]},
-            user: {only:[:name,:avatar] },
+            user: {only:[:name,:avatar,:id] }
         }
 
     }

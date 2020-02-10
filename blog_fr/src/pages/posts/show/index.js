@@ -86,11 +86,13 @@ export default function ShowPost(props)
             <p>{post.likes_count}</p>
             <button disabled={like}  onClick={SetLike}>Like</button>
             <p>{post.comments_count}</p>
-            <textarea onChange={handleTextareaChange}></textarea>
-            <br/>
             {post && post.avatars && post.avatars.map((image,index)=>{
                 return(<img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" />)
             }) }
+            <br/>
+            <textarea onChange={handleTextareaChange}></textarea>
+            <br/>
+
             <button onClick={AddComment}>Add comment</button>
             <div>
                 {

@@ -11,6 +11,9 @@ export default function EditPost(props)
     const tag={tag:''}
     const[tagState,setTagState]=useState([])
 
+
+    let [files,setFiles]=useState([])
+
     const[tags,setTags]=useState([])
 
     const addTag=()=>{
@@ -20,6 +23,7 @@ export default function EditPost(props)
     useEffect(()=>
     {
         GetPost()
+
     },[])
 
 
@@ -29,6 +33,10 @@ export default function EditPost(props)
         ()=>{
             if(Object.keys(post).length!=0)
             GetTags()
+
+
+
+
 
         },[JSON.stringify(post)]
     )
@@ -50,7 +58,7 @@ export default function EditPost(props)
 
     useEffect(()=>
     {
-       // console.log(tagState)
+       console.log(tagState)
     },[tagState])
 
     async function GetTags()
@@ -72,27 +80,45 @@ export default function EditPost(props)
     const OnSubmit=data=>{
         (async function EditPost()
         {
-            let found=false
+            console.log(post)
+           let found=false
             let index
-            let cat=await api.categories.fetchAll()
+            let cat=await api.categories.fetchAll();
             cat.data.map(function(category,i){
-                if(category.name===data.category){
-                    index=category.id
+                if(category.name===data.category) {
+                    index = category.id
                     found=true
                 }
             })
-            if(found)
-            {
+            if(found===true)
                 data.category_id=index
-            }
-            else
-            {
+            else {
                 let category=await api.categories.create({name:data.category})
-                index=category.data.id
+                index=category.id
                 data.category_id=index
             }
-            let res=await api.posts.update(data)
-            setPost(res.data)
+
+            let formData=new FormData()
+            formData.append('post[category_id]',data.category_id)
+            formData.append('post[title]',data.title)
+            formData.append('post[user_id]',data.user_id)
+            formData.append('post[content]',data.content)
+            formData.append('post[date_of_publication]',data.date_of_publication)
+            files.map((file,index)=>{
+                formData.append(`post[avatars[]`,file)
+            })
+            if(data.tags_posts_attributes)
+                data.tags_posts_attributes.map((tag,index)=>{
+                  if(tagState[index].ex!=="Yes" )  formData.append('post[tags_posts_attributes][][tag_attributes][name]',tag.tag_attributes.name)
+                })
+
+            let token=localStorage.getItem("token")
+
+            fetch(`http://127.0.0.1:3000/api/posts/${post.id}`, {
+                method: 'put',
+                headers: {'Authorization':`Bearer ${token}`,     'Access-Control-Allow-Origin':'*'},
+                body: formData
+            })
 
         })();
     }
@@ -106,12 +132,36 @@ export default function EditPost(props)
 
     }
 
+    async function deleteImage(index)
+    {
+
+
+        let data=new FormData()
+        data.append("post[post_id]",post.id)
+        data.append("post[avatar_id]",index)
+        let token=localStorage.getItem("token")
+        fetch(`http://127.0.0.1:3000/api/posts/deleteImage`, {
+            method: 'POST',
+            headers: {'Authorization':`Bearer ${token}`},
+            body: data
+        })
+        let newPost=Object.assign({}, post)
+         newPost.avatars= newPost.avatars.filter(function(val,i){
+             return i!=index
+         })
+
+
+
+        setPost(newPost)
+    }
+
 
 
     return(
         <div>
             {
                 post && <form onSubmit={handleSubmit(OnSubmit)}>
+                    {post.user &&   <input name="user_id" hidden value={post.user.id} type={'text'} ref={register({ required: true })} />}
                     <input name="id" hidden defaultValue={post.id}  ref={register}/>
                     <input name="created_at" hidden defaultValue={post.created_at}  ref={register}/>
                     <input name="updated_at" hidden defaultValue={post.updated_at}  ref={register}/>
@@ -141,6 +191,20 @@ export default function EditPost(props)
                         <input name="category" defaultValue={post.category.name} ref={register({required: true})}/>
                     }
                     {errors.name && <span>This field is required</span>}
+
+                    {post && post.avatars && post.avatars.map((image,index)=>{
+                        return(<div>
+                            <img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" />
+                            <button type="button" onClick={()=>deleteImage(index)}>delete</button>
+
+                        </div>)
+                    }) }
+
+
+                    <p>Добавить файлы</p>
+                    <input type={"file"} onChange={e=>setFiles(Array.from(e.target.files))} multiple="multiple" name="avatars[]" ref={register({ })}/>
+
+
                     <input type="submit" />
                 </form>
             }

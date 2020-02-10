@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
 
 
+
   devise_for :users
 
     resources :subscriptions
@@ -32,6 +33,8 @@ Rails.application.routes.draw do
     resources :categories, except: [:new, :edit]
     resources :comments, except:[:new,:edit]
   end
+
+  post '/api/posts/deleteImage', to: 'api/posts#deleteImage'
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

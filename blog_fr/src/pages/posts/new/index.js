@@ -50,7 +50,8 @@ export default function NewPost() {
            files.map((file,index)=>{
                 formData.append(`post[avatars[]`,file)
             })
-            data.tags_posts_attributes.map((tag,index)=>{
+           if(data.tags_posts_attributes)
+               data.tags_posts_attributes.map((tag,index)=>{
                 formData.append('post[tags_posts_attributes][][tag_attributes][name]',tag.tag_attributes.name)
             })
             //formData.append('post[tags_posts_attributes]',data.tags_posts_attributes)

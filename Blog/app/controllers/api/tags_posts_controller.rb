@@ -5,7 +5,7 @@ module Api
 
     def index
       pp params
-      if (params.has_key?(:post_id)) then
+       if (params.has_key?(:post_id)) then
         if(params[:post_id].nil?)
           return
         end
