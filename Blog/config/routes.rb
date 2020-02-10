@@ -24,10 +24,13 @@ Rails.application.routes.draw do
 
 
   namespace :api do
+    resources :tags, except:[:new,:edit]
+    resources :tags_posts, except:[:new,:edit]
     resources :posts, except: [:new, :edit]
     resources :likes, except: [:new, :edit]
     resources :users, except: [:new, :edit]
     resources :categories, except: [:new, :edit]
+    resources :comments, except:[:new,:edit]
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

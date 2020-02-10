@@ -6,10 +6,11 @@ export class XhrClient{
         let token=localStorage.getItem("token")
         this.client=axios.create(
             {
+
                 baseURL: 'http://127.0.0.1:3000/api',
                 headers:{
                     'Access-Control-Allow-Origin':'*',
-                    'Authorization':`Bearer ${token}`,
+                    'Authorization':`Bearer ${token}`
                 },
             });
 

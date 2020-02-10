@@ -3,8 +3,29 @@ module Api
 
     before_action :authenticate_request!
 
+
+    def create
+      @post=Post.find(params[:like][:post_id])
+      @resource=resource_class.new(resource_params)
+
+      logger.error
+      if @resource.save!
+        if @post
+          @post.likes_count=@post.likes_count+1
+          @post.save
+        end
+        render json: @resource.as_json(as_json_resource)
+      else
+        render json: {error:@resource.errors},status: :unprocessable_entity
+      end
+    end
+
+
+
     def show
-      @resource=resource_class.find_by_post_id(params[:id])
+      pp params
+      resource_params
+      @resource=resource_class.where(post_id:params[:post_id], user_id:params[:user_id])
       render json: @resource.as_json(as_json_resource)
     end
 

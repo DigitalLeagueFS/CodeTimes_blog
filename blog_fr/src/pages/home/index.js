@@ -33,6 +33,8 @@ import ShowPost from "../posts/show";
                         <div className={"card flex-md-row box-shadow h-md-250"}>
                             <div className={"card-body d-flex flex-column align-items-start"}>
                                 <Link to={"ShowPost/"+post.id} >go</Link>
+                                {post.user && post.user.avatar &&   <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" />}
+                                <br/>
                             <p>{post.user.name}</p>
                             <h1>{post.title}</h1>
                             <p className={"card-text mb-auto"}>{post.content}</p>

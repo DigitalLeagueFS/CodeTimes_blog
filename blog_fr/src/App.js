@@ -9,6 +9,7 @@ import Button from "./components/form/Button";
 import Room from "./pages/room/index"
 import NewPost from "./pages/posts/new";
 import ShowPost from "./pages/posts/show"
+import EditPost from "./pages/posts/edit";
 
 import{
   BrowserRouter as Router,
@@ -42,17 +43,6 @@ function App() {
     setForm(input)
   }
 
-  const handleAuthClick=()=>{
-    const token=localStorage.getItem("token")
-    fetch(`http://localhost:3000/user_is_authed`,{
-      headers:{
-        "Authorization":`Bearer ${token}`
-      }
-    })
-        .then(resp => resp.json())
-        .then(data => console.log(data))
-  }
-
 
 
 
@@ -78,11 +68,11 @@ function App() {
       <Router>
         <div className="App">
 
-        <LayoutWrapper status={status} handleFormSwitch={handleFormSwitch}/>
+        <LayoutWrapper  status={status} handleFormSwitch={handleFormSwitch}/>
         {
           renderForm()
         }
-        <button onClick={handleAuthClick} >Access Authorized Route</button>
+
 
 
       <Switch>
@@ -91,6 +81,8 @@ function App() {
         <Route path="/NewPost" component={(()=>(<NewPost />))}  />
         <Route path="/Room" component={(()=>(<Room />))} />
         <Route path="/ShowPost/:id" component={ShowPost} />
+        <Route path="/EditPost/:id" component={EditPost} />
+
       </Switch>
     </div>
       </Router>

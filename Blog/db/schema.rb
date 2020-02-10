@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_30_095512) do
+ActiveRecord::Schema.define(version: 2020_02_09_190514) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -49,13 +49,11 @@ ActiveRecord::Schema.define(version: 2020_01_30_095512) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.text "descriprion"
+    t.text "description"
     t.integer "post_id", null: false
-    t.integer "comment_id", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["comment_id"], name: "index_comments_on_comment_id"
     t.index ["post_id"], name: "index_comments_on_post_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
@@ -75,11 +73,12 @@ ActiveRecord::Schema.define(version: 2020_01_30_095512) do
     t.text "content"
     t.datetime "date_of_publication"
     t.integer "user_id", null: false
-    t.integer "likes_count"
-    t.integer "comments_count"
+    t.integer "likes_count", default: 0
+    t.integer "comments_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "category_id", null: false
+    t.string "avatars"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -92,15 +91,11 @@ ActiveRecord::Schema.define(version: 2020_01_30_095512) do
 
   create_table "tags", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tags_posts", force: :cascade do |t|
     t.integer "post_id", null: false
     t.integer "tag_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.index ["post_id"], name: "index_tags_posts_on_post_id"
     t.index ["tag_id"], name: "index_tags_posts_on_tag_id"
   end
@@ -121,13 +116,13 @@ ActiveRecord::Schema.define(version: 2020_01_30_095512) do
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
+    t.string "avatar"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "attachments", "posts"
-  add_foreign_key "comments", "comments"
   add_foreign_key "comments", "posts"
   add_foreign_key "comments", "users"
   add_foreign_key "likes", "posts"

@@ -40,21 +40,52 @@ export default function NewPost() {
                 data.category_id=index
             }
 
+            console.log(data)
+            let formData=new FormData()
+            formData.append('post[category_id]',data.category_id)
+            formData.append('post[title]',data.title)
+            formData.append('post[user_id]',data.user_id)
+            formData.append('post[content]',data.content)
+            formData.append('post[date_of_publication]',data.date_of_publication)
+           files.map((file,index)=>{
+                formData.append(`post[avatars[]`,file)
+            })
+            data.tags_posts_attributes.map((tag,index)=>{
+                formData.append('post[tags_posts_attributes][][tag_attributes][name]',tag.tag_attributes.name)
+            })
+            //formData.append('post[tags_posts_attributes]',data.tags_posts_attributes)
+            console.log(formData)
+
+            let token=localStorage.getItem("token")
+
+            fetch(`http://127.0.0.1:3000/api/posts/`, {
+                method: 'POST',
+                headers: {'Authorization':`Bearer ${token}`},
+                body: formData
+            })
 
             data.images=files
             console.log(data)
 
-            let res = await api.posts.create(data);
-            console.log(res.data);
-            if(res.data.id){
-            //    window.location.href = '/';
-            }
+        //    let res = await api.posts.create(data);
+            //console.log(res.data);
+
         })();
     }
 
     let [files,setFiles]=useState([])
 
     let date= new Date()
+
+    function DeleteTag(index)
+    {
+        let newTags=tagState.filter(function(val,i)
+        {
+            return i!=index
+        })
+        setTagState(newTags)
+    }
+
 
 
 
@@ -70,7 +101,9 @@ export default function NewPost() {
                 {
                     tagState.map((Tag,index)=>{
                         return(<div>
-                                <input name={`tags[${index}]`}  key={index} ref={register({ required: true })}  />
+                                <input name={`tags_posts_attributes[${index}].tag_attributes.name`}  key={index} ref={register({ required: true })}  />
+                                <button type="button" onClick={()=>DeleteTag(index)}>delete</button>
+
                             </div>
                         )
                     })
@@ -90,7 +123,7 @@ export default function NewPost() {
                 <br/>
 
                 <p>Добавить файлы</p>
-                <input type={"file"} onChange={e=>setFiles(e.target.files)} multiple="multiple" name="images[]" ref={register({ })}/>
+                <input type={"file"} onChange={e=>setFiles(Array.from(e.target.files))} multiple="multiple" name="avatars[]" ref={register({ })}/>
 
                 <input name="user_id" hidden value={localStorage.getItem("id")} type={'text'} ref={register({ required: true })} />
 

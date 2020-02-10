@@ -13,6 +13,16 @@ class UsersController < ApiController
     render json: @collection.as_json(as_json_collection)
   end
 
+  def update
+    @resource=resource_class.find(params[:id])
+    @resource.assign_attributes(resource_params)
+    if @resource.save
+      render json: @resource.as_json(as_json_resource)
+    else
+      render json: {errors:@resource.errors}, status: :unprocessable_entity
+    end
+  end
+
 
   def show
     if params[:id]=="only_my"
@@ -30,7 +40,7 @@ class UsersController < ApiController
   end
 
   def resource_params
-    params.require(:user).permit(:email, :name, :avatar)
+    params.require(:user).permit(:email, :name, :avatar,:bio)
   end
 
 end

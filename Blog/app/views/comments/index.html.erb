@@ -5,7 +5,7 @@
 <table>
   <thead>
     <tr>
-      <th>Descriprion</th>
+      <th>Description</th>
       <th>Post</th>
       <th>Comment</th>
       <th>User</th>
@@ -16,13 +16,12 @@
   <tbody>
     <% @comments.each do |comment| %>
       <tr>
-        <td><%= comment.descriprion %></td>
+        <td><%= comment.description %></td>
         <td><%= comment.post_id %></td>
-        <td><%= comment.comment_id %></td>
         <td><%= comment.user_id %></td>
         <td><%= link_to 'Show', comment %></td>
         <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
-        <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= button_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' }, :class=>"btn btn-outline-info" %></td>
       </tr>
     <% end %>
   </tbody>
