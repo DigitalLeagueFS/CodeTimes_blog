@@ -62,6 +62,14 @@ function App() {
     }
   }
 
+  function exit()
+  {
+    localStorage.removeItem("token")
+    setStatus( 401)
+    window.location.reload()
+
+  }
+
 
 
   return (
@@ -82,6 +90,7 @@ function App() {
         <Route path="/Room" component={(()=>(<Room />))} />
         <Route path="/ShowPost/:id" component={ShowPost} />
         <Route path="/EditPost/:id" component={EditPost} />
+
 
       </Switch>
     </div>

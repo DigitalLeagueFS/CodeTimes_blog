@@ -5,6 +5,9 @@ import EditPost from "../posts/edit";
 import {useForm} from "react-hook-form";
 import Axios from "axios";
 import posts from "../../services/api/posts";
+import Form from "react-bootstrap/Form";
+import {Button, Row} from "react-bootstrap";
+import Col from "react-bootstrap/Col";
 
 function Room(){
     const { register, handleSubmit, watch, errors } = useForm();
@@ -86,6 +89,40 @@ function Room(){
 
     return (
         <div>
+            <Form  onSubmit={handleSubmit(OnSubmit)}>
+
+                <Form.Group  as={Row}>
+                    <Form.Label column sm={2}>Name</Form.Label>
+                   <Col sm={10} xs lg="2"> <Form.Control   name="name"  defaultValue={user.name} type="text" placeholder="name"  ref={register({required:true})} />
+                </Col>
+                </Form.Group>
+
+
+
+                <Form.Group as={Row}>
+                    <Form.Label column sm={2}>Bio</Form.Label>
+                 <Col xs lg="2" sm={10}>
+                     <Form.Control as="textarea" name="bio" defaultValue={user.bio}  ref={register} />
+                 </Col>
+                </Form.Group>
+
+                <Form.Group as={Row}>
+                <Form.Label column sm={2}>Email</Form.Label>
+              <Col xs lg="2" sm={10}>  <Form.Control name="email" defaultValue={user.email} type="text" ref={register}/>
+              </Col>
+
+                </Form.Group>
+
+                <Form.Group>
+                <Form.Label>Avatar</Form.Label>
+                <Form.Control name="avatar" type="file" onChange={fileChange} ref={register} />
+                </Form.Group>
+
+
+
+                <Button variant="primary" type="submit">update</Button>
+            </Form>
+
             <form onSubmit={handleSubmit(OnSubmit)}>
                 {user.avatar &&   <img src={`http://127.0.0.1:3000${user.avatar.url}`} height="50px" />}
                 <br/>

@@ -1,6 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react'
 import { useForm } from 'react-hook-form'
 import api from "../../../services/api";
+import likeImg from "../../../images/like.png";
+import unlikeImg from "../../../images/unlike.png"
+
 
 export default function ShowPost(props)
 {
@@ -84,7 +87,8 @@ export default function ShowPost(props)
             <h1>{post.title}</h1>
             <p className={"card-text mb-auto"}>{post.content}</p>
             <p>{post.likes_count}</p>
-            <button disabled={like}  onClick={SetLike}>Like</button>
+
+            <button disabled={like}  onClick={SetLike}>{like && <img src={likeImg} />} {like==false && <img   src={unlikeImg} />} </button>
             <p>{post.comments_count}</p>
             {post && post.avatars && post.avatars.map((image,index)=>{
                 return(<img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" />)

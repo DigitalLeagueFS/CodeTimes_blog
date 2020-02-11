@@ -5,6 +5,16 @@ import styled from 'styled-components';
 import {Link} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ShowPost from "../posts/show";
+import {Container} from "react-bootstrap";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Card from "react-bootstrap/Card";
+import { useHistory } from 'react-router-dom';
+import Button from "react-bootstrap/Button";
+
+import likeImg from "../../images/like.png";
+import unlikeImg from "../../images/unlike.png"
+import commentaryImg from "../../images/commentary.png"
 
  function Home(props) {
      let [posts, setPosts]=useState([])
@@ -24,30 +34,29 @@ import ShowPost from "../posts/show";
 
 
     return (
-
-        <div>
-            <div className={"d-flex flex-row flex-wrap center-block"}>
+        <Container>
+            <Row>
+                <Col><Card>kek</Card></Col>
+            </Row>
             {
                 posts.map(function (post, i) {
                     return (
-                        <div className={"card flex-md-row box-shadow h-md-250"}>
-                            <div className={"card-body d-flex flex-column align-items-start"}>
-                                <Link to={"ShowPost/"+post.id} >go</Link>
-                                {post.user && post.user.avatar &&   <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" />}
-                                <br/>
+                        <Card>
+                            <Card.Header>   <Link to={"ShowPost/"+post.id} >   <Button variant="light">{post.title}  </Button></Link></Card.Header>
+
                             <p>{post.user.name}</p>
-                            <h1>{post.title}</h1>
-                            <p className={"card-text mb-auto"}>{post.content}</p>
-                            <p>{post.likes_count}</p>
-                            <p>{post.comments_count}</p>
-                            </div>
-                        </div>
+                            {post.user && post.user.avatar && <Card.Subtitle className="mb-2 text-muted">
+                                <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" />
+                            </Card.Subtitle>}
+                            <Card.Text>{post.content}</Card.Text>
+                            <p><img src={unlikeImg} /> {post.likes_count}</p>
+                            <p><img src={commentaryImg} />{post.comments_count}</p>
+                        </Card>
 
                     )
                 })
             }
-            </div>
-        </div>
+        </Container>
     );
 }
 
