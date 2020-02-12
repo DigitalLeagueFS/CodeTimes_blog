@@ -1,4 +1,10 @@
 import React,{useState} from 'react'
+import Form from "react-bootstrap/Form";
+import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import {CardStyle} from "../../styles/styles";
 
 function LoginForm(props) {
     const [email, setEmail]=useState("")
@@ -36,31 +42,31 @@ function LoginForm(props) {
 
     }
 
-    const formDivStyle={
-        margin:"auto",
-        padding:"20px",
-        width:"80%"
-    }
+
 
     return(
-        <div>
-            <div style={formDivStyle}>
-                <h1>Log In</h1>
-                <form className="ui form" onSubmit={handleSubmit}>
-                    <div className="field">
-                        <label>Username</label>
-                        <input value={email} onChange={handleEmailChange} type="text" placeholder="email" />
-                    </div>
+            <Form onSubmit={handleSubmit} style={CardStyle}>
+                <FormGroup as={Row}  className="d-flex justify-content-center   ">
+                    <FormLabel column sm={2}>Username</FormLabel>
+                    <Col  xs lg="2" sm={10}>
+                        <FormControl value={email} onChange={handleEmailChange} placeholder="email" />
+                    </Col>
+                </FormGroup>
 
-                    <div className="field">
-                        <label>Password</label>
-                        <input value={password} onChange={handlePasswordChange} type="password" placeholder="password" />
-                    </div>
+                <FormGroup as={Row}  className="d-flex justify-content-center   ">
+                    <FormLabel column sm={2}>Password</FormLabel>
+                    <Col  xs lg="2" sm={10}>
+                        <FormControl type={"password"} value={password} onChange={handlePasswordChange} placeholder="password"  />
+                    </Col>
+                </FormGroup>
 
-                    <button className="ui button" type="submit">Submit</button>
-                </form>
-            </div>
-        </div>
+                <FormGroup as={Row}  className="d-flex justify-content-center   " >
+                    <Col  xs lg="2" sm={10}>
+                        <Button type="submit">Log in</Button>
+                    </Col>
+                </FormGroup>
+            </Form>
+
     )
 
 

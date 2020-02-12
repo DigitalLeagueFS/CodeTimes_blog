@@ -7,3 +7,12 @@ import Card from "react-bootstrap/Card";
        marginBottom:"20px",
        marginTop:"20px"
 }
+
+export const TransButton={
+        backgroundColor: "Transparent",
+backgroundRepeat:"no-repeat",
+border: "none",
+cursor:"pointer",
+overflow: "hidden",
+outline:"none"
+}

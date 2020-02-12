@@ -8,9 +8,11 @@ import {Link} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import commentaryImg from "../../../images/commentary.png";
 import {Container} from "react-bootstrap";
-import {CardStyle} from "../../../styles/styles";
+import {CardStyle, TransButton} from "../../../styles/styles";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Lightbox from 'react-image-lightbox';
+import 'react-image-lightbox/style.css';
 
 
 
@@ -20,6 +22,7 @@ export default function ShowPost(props)
     const[like,setLike]=useState(false)
     const[comment,setComment]=useState("")
     const[comments,setComments]=useState([])
+    const[isShow,setShow]=useState(null)
 
     useEffect( ()=>{
         GetPost().then(resp=> {
@@ -89,7 +92,7 @@ export default function ShowPost(props)
     return(
 
         <Container style={CardStyle}>
-            <Card>
+            <Card style={CardStyle}>
                 <Card.Header>{post.title} </Card.Header>
 
                 <p>{post.user && post.user.name}</p>
@@ -101,9 +104,11 @@ export default function ShowPost(props)
 
 
                 {post && <Row>
-                    {post && post.avatars  && post.avatars.map((image,index)=>{
-                        return(<Col><img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" /> </Col>)
+                    {post.avatars  && post.avatars.map((image,index)=>{
+                        return(<Col> <button style={TransButton} onClick={()=>setShow(`http://127.0.0.1:3000${image.url}`)}> <img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" /> </button>  </Col>)
                     }) }
+
+                    {isShow!=null && <Lightbox mainSrc={isShow} onCloseRequest={()=>setShow(null)}  />}
 
                 </Row>}
 
