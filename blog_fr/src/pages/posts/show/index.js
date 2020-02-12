@@ -7,7 +7,7 @@ import Card from "react-bootstrap/Card";
 import {Link} from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import commentaryImg from "../../../images/commentary.png";
-import {Container} from "react-bootstrap";
+import {Container, Toast, ToastBody, ToastHeader} from "react-bootstrap";
 import {CardStyle, TransButton} from "../../../styles/styles";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -105,7 +105,7 @@ export default function ShowPost(props)
 
                 {post && <Row>
                     {post.avatars  && post.avatars.map((image,index)=>{
-                        return(<Col> <button style={TransButton} onClick={()=>setShow(`http://127.0.0.1:3000${image.url}`)}> <img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" /> </button>  </Col>)
+                        return(<Col> <button style={TransButton} onClick={()=>setShow(`http://127.0.0.1:3000${image.url}`)}> <img src={`http://127.0.0.1:3000${image.url}`} max-height="400px" max-width="200px" /> </button>  </Col>)
                     }) }
 
                     {isShow!=null && <Lightbox mainSrc={isShow} onCloseRequest={()=>setShow(null)}  />}
@@ -129,10 +129,14 @@ export default function ShowPost(props)
                     comments.map(function (comment,i)
                     {
                         return(
-                            <div>
-                                <p>{comment.description}</p>
-                                <p>{comment.user.name}</p>
+
+                            <div className={"d-flex justify-content-center"}>
+                            <Toast >
+                                <ToastHeader>{comment.user.name}</ToastHeader>
+                                <ToastBody>{comment.description}</ToastBody>
+                            </Toast>
                             </div>
+
                         )
                     })
                 }

@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+
+
+  post 'getToken',to:'reg#getToken'
+
+
+  post 'sign_up',to: 'reg#create'
   post 'auth_user',to: 'authentication#authenticate_user'
   get 'auth',to:'application#authenticate_request!'
   get 'home',to: 'home#index'

@@ -49,7 +49,6 @@ function Room(){
                 let userr={user:{...object}}
 
 
-               //    let user=await api.users.update({formData})
 
                fetch(`http://127.0.0.1:3000/api/users/${user.id}`, {
                     method: 'put',
@@ -58,22 +57,6 @@ function Room(){
                 })
 
 
-
-
-                // Axios({
-                //     method:'put',
-                //     url:`http://127.0.0.1:3000/api/users/${user.id}`,
-                //     data:userr,
-                //     headers:{'Content-Type':'multipart/form-data',  'Authorization':`Bearer ${token}`}
-                // })
-                //     .then(function (response){
-                //         console.log(response)
-                //     })
-
-           // console.log(data)
-    //       data.avatar=file
-     //    let user=await api.users.update(data)
-         //   console.log(user.data)
             }
         )();
     }
