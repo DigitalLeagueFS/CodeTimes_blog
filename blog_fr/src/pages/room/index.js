@@ -6,8 +6,13 @@ import {useForm} from "react-hook-form";
 import Axios from "axios";
 import posts from "../../services/api/posts";
 import Form from "react-bootstrap/Form";
-import {Button, Row} from "react-bootstrap";
+import {Button, Container, DropdownButton, DropdownItem, Row} from "react-bootstrap";
 import Col from "react-bootstrap/Col";
+import likeImg from "../../images/like.png";
+import unlikeImg from "../../images/unlike.png"
+import commentaryImg from "../../images/commentary.png"
+import Card from "react-bootstrap/Card";
+import {CardStyle} from "../../styles/styles";
 
 function Room(){
     const { register, handleSubmit, watch, errors } = useForm();
@@ -89,82 +94,87 @@ function Room(){
 
     return (
         <div>
-            <Form  onSubmit={handleSubmit(OnSubmit)}>
+            <Form style={CardStyle}  onSubmit={handleSubmit(OnSubmit)}>
 
-                <Form.Group  as={Row}>
+                {user.avatar &&  <Form.Group as={Row} className={"d-flex justify-content-center"}>
+                    <img src={`http://127.0.0.1:3000${user.avatar.url}`} height="50px" />
+                </Form.Group> }
+
+                <Form.Group  as={Row} className="d-flex justify-content-center   ">
                     <Form.Label column sm={2}>Name</Form.Label>
                    <Col sm={10} xs lg="2"> <Form.Control   name="name"  defaultValue={user.name} type="text" placeholder="name"  ref={register({required:true})} />
                 </Col>
+                    { errors.name && <Col xs lg={2} sm={10}>
+                        <span>This field is required</span>
+                    </Col> }
                 </Form.Group>
 
 
 
-                <Form.Group as={Row}>
+                <Form.Group as={Row} className="d-flex justify-content-center   ">
                     <Form.Label column sm={2}>Bio</Form.Label>
                  <Col xs lg="2" sm={10}>
                      <Form.Control as="textarea" name="bio" defaultValue={user.bio}  ref={register} />
                  </Col>
+                    { errors.bio && <Col xs lg={2} sm={10}>
+                        <span>This field is required</span>
+                    </Col> }
                 </Form.Group>
 
-                <Form.Group as={Row}>
+                <Form.Group as={Row} className="d-flex justify-content-center   ">
                 <Form.Label column sm={2}>Email</Form.Label>
-              <Col xs lg="2" sm={10}>  <Form.Control name="email" defaultValue={user.email} type="text" ref={register}/>
+              <Col xs lg="2" sm={10}>  <Form.Control name="email" defaultValue={user.email} type="text" ref={register({required: true})}/>
               </Col>
+                    { errors.title && <Col xs lg={2} sm={10}>
+                        <span>This field is required</span>
+                    </Col> }
 
                 </Form.Group>
 
-                <Form.Group>
-                <Form.Label>Avatar</Form.Label>
+                <Form.Group as={Row} className="d-flex justify-content-center   ">
+                <Form.Label column sm={2}>Avatar</Form.Label>
+                    <Col xs lg="2" sm={10}>
                 <Form.Control name="avatar" type="file" onChange={fileChange} ref={register} />
+                    </Col>
                 </Form.Group>
 
 
-
+                <Form.Group as={Row} className="d-flex justify-content-center" >
                 <Button variant="primary" type="submit">update</Button>
+                </Form.Group>
             </Form>
 
-            <form onSubmit={handleSubmit(OnSubmit)}>
-                {user.avatar &&   <img src={`http://127.0.0.1:3000${user.avatar.url}`} height="50px" />}
-                <br/>
-                <input name="id" hidden defaultValue={user.id} ref={register({required:true})} />
-                <label htmlFor="name">name*</label>
-                <input name="name" defaultValue={user.name} ref={register({required:true})} />
-                {errors.name && <span>This field is required</span>}
-                <br/>
-                <label htmlFor="bio">bio</label>
-                <textarea name="bio" defaultValue={user.bio} ref={register} />
-                <br/>
-                <label htmlFor="email">email*</label>
-                <input name="email" defaultValue={user.email} ref={register({required:true})} />
-                <input type="file" onChange={fileChange} name="avatar" ref={register}/>
-                {errors.name && <span>This field is required</span>}
-                <br/>
-                <input type="submit" value="update"/>
-                <br/>
-            </form>
 
-            <div className={"d-flex flex-row flex-wrap center-block"}>
+
+            <Container>
                 {
                     posts.map(function (post, i) {
                         return (
-                            <div className={"card flex-md-row box-shadow h-md-250"}>
-                                <div className={"card-body d-flex flex-column align-items-start"}>
-                                    <Link to={"ShowPost/"+post.id} >go</Link>
-                                    <p>{post.user.name}</p>
-                                    <button> <Link to={"EditPost/"+post.id}>edit</Link> </button>
-                                    <button type="button" onClick={()=>removePost(post.id,i)}>remove</button>
-                                    <h1>{post.title}</h1>
-                                    <p className={"card-text mb-auto"}>{post.content}</p>
-                                    <p>{post.likes_count}</p>
-                                    <p>{post.comments_count}</p>
-                                </div>
-                            </div>
+                            <Card style={CardStyle}>
+                                <Card.Header> <Row>  <Col> <Link to={"ShowPost/"+post.id} >   <Button variant="light">{post.title}  </Button></Link> </Col>
+
+
+                                 <Col>  <DropdownButton variant={"success"} id={"Options"} title={"Options"}>
+                                        <DropdownItem> <Button  variant="light" type={"button"}>  <Link to={"EditPost/"+post.id}>edit</Link> </Button>   </DropdownItem>
+                                        <DropdownItem> <Button  variant="light" type="button" onClick={()=>removePost(post.id,i)}>remove</Button></DropdownItem>
+                                    </DropdownButton>
+                                 </Col>
+                                </Row>
+                                </Card.Header>
+                                <p>{post.user.name}</p>
+                                {post.user && post.user.avatar && <Card.Subtitle className="mb-2 text-muted">
+                                    <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" />
+                                </Card.Subtitle>}
+                                <Card.Text>{post.content}</Card.Text>
+                                <p><img src={unlikeImg} /> {post.likes_count}</p>
+                                <p><img src={commentaryImg} />{post.comments_count}</p>
+                            </Card>
 
                         )
                     })
-
                 }
-            </div>
+            </Container>
+
         </div>
     );
 

@@ -3,6 +3,15 @@ import { useForm } from 'react-hook-form'
 import api from "../../../services/api";
 import likeImg from "../../../images/like.png";
 import unlikeImg from "../../../images/unlike.png"
+import Card from "react-bootstrap/Card";
+import {Link} from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import commentaryImg from "../../../images/commentary.png";
+import {Container} from "react-bootstrap";
+import {CardStyle} from "../../../styles/styles";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
 
 
 export default function ShowPost(props)
@@ -79,22 +88,34 @@ export default function ShowPost(props)
 
     return(
 
-        <div>
+        <Container style={CardStyle}>
+            <Card>
+                <Card.Header>{post.title} </Card.Header>
 
-            {post.user && post.user.avatar &&   <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" width="100px" />}
-            <br/>
-            <p>{post.user && post.user.name}</p>
-            <h1>{post.title}</h1>
-            <p className={"card-text mb-auto"}>{post.content}</p>
-            <p>{post.likes_count}</p>
+                <p>{post.user && post.user.name}</p>
+                {post.user && post.user.avatar && <Card.Subtitle className="mb-2 text-muted">
+                    <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" />
+                </Card.Subtitle>}
+                <Card.Text>{post.content}</Card.Text>
 
-            <button disabled={like}  onClick={SetLike}>{like && <img src={likeImg} />} {like==false && <img   src={unlikeImg} />} </button>
-            <p>{post.comments_count}</p>
-            {post && post.avatars && post.avatars.map((image,index)=>{
-                return(<img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" />)
-            }) }
+
+
+                {post && <Row>
+                    {post && post.avatars  && post.avatars.map((image,index)=>{
+                        return(<Col><img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" /> </Col>)
+                    }) }
+
+                </Row>}
+
             <br/>
-            <textarea onChange={handleTextareaChange}></textarea>
+            <Row>
+                <Col>  <button disabled={like}  onClick={SetLike}>{like && <img src={likeImg} />} {like==false && <img   src={unlikeImg} />} </button></Col>
+                <Col>   <p><img src={commentaryImg} />{post.comments_count}</p></Col>
+
+            </Row>
+
+            </Card>
+            <textarea cols="100" onChange={handleTextareaChange}></textarea>
             <br/>
 
             <button onClick={AddComment}>Add comment</button>
@@ -103,15 +124,20 @@ export default function ShowPost(props)
                     comments.map(function (comment,i)
                     {
                         return(
-                        <div>
-                            <p>{comment.description}</p>
-                            <p>{comment.user.name}</p>
-                        </div>
+                            <div>
+                                <p>{comment.description}</p>
+                                <p>{comment.user.name}</p>
+                            </div>
                         )
                     })
                 }
             </div>
-        </div>
+
+
+
+
+
+        </Container>
 
     )
 }

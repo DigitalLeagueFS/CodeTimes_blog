@@ -11,6 +11,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import { useHistory } from 'react-router-dom';
 import Button from "react-bootstrap/Button";
+import {CardStyle} from "../../styles/styles"
 
 import likeImg from "../../images/like.png";
 import unlikeImg from "../../images/unlike.png"
@@ -28,6 +29,7 @@ import commentaryImg from "../../images/commentary.png"
 
      async function getAll() {
              let res = await api.posts.fetchAll();
+             console.log(res.data)
              setPosts(res.data);
              return res;
          }
@@ -35,13 +37,11 @@ import commentaryImg from "../../images/commentary.png"
 
     return (
         <Container>
-            <Row>
-                <Col><Card>kek</Card></Col>
-            </Row>
             {
                 posts.map(function (post, i) {
                     return (
-                        <Card>
+
+                        <Card style={CardStyle}>
                             <Card.Header>   <Link to={"ShowPost/"+post.id} >   <Button variant="light">{post.title}  </Button></Link></Card.Header>
 
                             <p>{post.user.name}</p>

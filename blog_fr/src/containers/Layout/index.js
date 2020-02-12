@@ -47,11 +47,11 @@ export function LayoutWrapper(props){
             <button onClick={() => props.handleFormSwitch("login")}>Log In</button>
         </div>
         }
-    {status===204 && <div>
+    {status===204 && <div className="d-flex justify-content-center   ">
         <Navbar bg="light" expand="lg">
         {layout}
 
-        <Nav className={"mr-auto"} >
+        <Nav className={"mr-auto "} >
 
             <Nav.Item>
                 <Nav.Link  href="/Room">Profile</Nav.Link>

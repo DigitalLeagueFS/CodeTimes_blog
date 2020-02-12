@@ -2,6 +2,12 @@ import React, {useEffect, useState} from 'react'
 import { useForm } from 'react-hook-form'
 import api from "../../../services/api";
 import {register} from "../../../serviceWorker";
+import Form from "react-bootstrap/Form";
+import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
+import {CardStyle} from "../../../styles/styles";
 
 export default function EditPost(props)
 {
@@ -124,7 +130,9 @@ export default function EditPost(props)
     }
 
   async  function DeleteTag(id,index) {
-    let tag=await api.tagsPost.destroy({id:id})
+        if(id!=null) {
+            let tag = await api.tagsPost.destroy({id: id})
+        }
       let tags=tagState.filter(function (val,i) {
         return i!==index
       })
@@ -160,54 +168,81 @@ export default function EditPost(props)
     return(
         <div>
             {
-                post && <form onSubmit={handleSubmit(OnSubmit)}>
+                post && <Form style={CardStyle} onSubmit={handleSubmit(OnSubmit)}>
                     {post.user &&   <input name="user_id" hidden value={post.user.id} type={'text'} ref={register({ required: true })} />}
                     <input name="id" hidden defaultValue={post.id}  ref={register}/>
                     <input name="created_at" hidden defaultValue={post.created_at}  ref={register}/>
                     <input name="updated_at" hidden defaultValue={post.updated_at}  ref={register}/>
-                    <label htmlFor="title">Title*</label>
-                    <input name="title" defaultValue={post.title} ref={register({required: true})}/>
-                    {errors.name && <span>This field is required</span>}
-                    <br/>
-                    <label htmlFor="content">Content*</label>
-                    <input name="content" defaultValue={post.content} ref={register({required: true})}/>
-                    {errors.name && <span>This field is required</span>}
-                    <br/>
+                    <FormGroup as={Row} className="d-flex justify-content-center   ">
+                        <FormLabel column sm={2}>title</FormLabel>
+                        <Col xs lg={2}>
+                            <FormControl name="title" defaultValue={post.title} ref={register({required: true})} />
+                        </Col>
+                    </FormGroup>
 
-                    <button onClick={addTag}  style={{size:"90px"}}>add</button>
+                    <FormGroup as={Row} className="d-flex justify-content-center   ">
+                        <FormLabel column sm={2}>content</FormLabel>
+                        <Col xs lg={2}>
+                            <FormControl as={"textarea"}  name="content" defaultValue={post.content} ref={register({required: true})} />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup as={Row} className="d-flex justify-content-center   ">
+                        <FormLabel column sm={2}>addTag </FormLabel>
+                        <Col xs lg={2}>
+                            <Button variant="outline-secondary" onClick={addTag}  style={{size:"90px"}}>add</Button>
+                        </Col>
+                    </FormGroup>
+
                     {
                         tagState.map((Tag,index)=>{
-                            return(<div>
-                                    <input name={`tags_posts_attributes[${index}].tag_attributes.name`} defaultValue={Tag.name} key={index} ref={register({ required: true })}  />
-                                    {Tag.ex==="Yes" &&<button type="button" onClick={()=>DeleteTag(Tag.TagsPostId,index)}>delete</button>}
-                                </div>
+                            return(<FormGroup as={Row} className="d-flex justify-content-center   ">
+                                    <Col xs lg={2}>
+                                        <input name={`tags_posts_attributes[${index}].tag_attributes.name`} defaultValue={Tag.name} key={index} ref={register({ required: true })}  />
+                                    </Col>
+
+                                    {Tag.ex==="Yes" && <Col xs lg={2}> <Button type="button" variant="outline-danger" onClick={()=>DeleteTag(Tag.TagsPostId,index)}>delete</Button> </Col>}
+                                    {Tag.ex !=="Yes" &&  <Col xs lg={2}> <Button type="button" variant="outline-danger" onClick={()=>DeleteTag(null,index)}>delete</Button> </Col> }
+                                </FormGroup>
                             )
                         })
                     }
-                    <br/>
-                    <label htmlFor="category">Category*</label>
+
                     {
-                        post.category &&
-                        <input name="category" defaultValue={post.category.name} ref={register({required: true})}/>
+                        post.category &&  <FormGroup className="d-flex justify-content-center   " as={Row}>
+                            <FormLabel column sm={2}>Category</FormLabel>
+                            <Col xs lg={2}>
+                                <FormControl name="category" defaultValue={post.category.name} ref={register({required: true})} />
+                            </Col>
+                        </FormGroup>
                     }
-                    {errors.name && <span>This field is required</span>}
 
                     {post && post.avatars && post.avatars.map((image,index)=>{
-                        return(<div>
+                        return(<Row className="d-flex justify-content-center   ">
                             <img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" />
-                            <button type="button" onClick={()=>deleteImage(index)}>delete</button>
+                            <Button type="button" variant="outline-danger" onClick={()=>deleteImage(index)}>delete</Button>
 
-                        </div>)
+                        </Row>)
                     }) }
 
 
-                    <p>Добавить файлы</p>
-                    <input type={"file"} onChange={e=>setFiles(Array.from(e.target.files))} multiple="multiple" name="avatars[]" ref={register({ })}/>
+                    <FormGroup as={Row} className="d-flex justify-content-center   ">
+                        <FormLabel column sm={2}>Add images</FormLabel>
+                        <Col xs lg={2}>
+                            <FormControl type={"file"}  onChange={e=>setFiles(Array.from(e.target.files))} multiple="multiple" name="avatars[]" ref={register({ })} />
+                        </Col>
+                    </FormGroup>
+
+                    <FormGroup as={Row} className="d-flex justify-content-center   ">
+                        <Button type="submit">Edit post</Button>
+                    </FormGroup>
 
 
-                    <input type="submit" />
-                </form>
+
+
+                </Form>
             }
+
         </div>
     )
 }

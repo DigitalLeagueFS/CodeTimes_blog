@@ -1,6 +1,11 @@
 import React, {useState} from 'react'
 import { useForm } from 'react-hook-form'
 import api from "../../../services/api";
+import Form, {FormRow} from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import {Container} from "react-bootstrap";
 
 
 export default function NewPost() {
@@ -93,44 +98,77 @@ export default function NewPost() {
     return (
         <>
             <h1>New Post</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <label htmlFor="title">Title *</label>
-                <input name="title" ref={register({ required: true })} />
-                {errors.name && <span>This field is required</span>}
-                <br/>
-                <button onClick={addTag}  style={{size:"90px"}}>add</button>
+            <Container  >
+            <Form  onSubmit={handleSubmit(onSubmit)} >
+                <Form.Group as={Row} className="d-flex justify-content-center   ">
+                    <Form.Label column sm={2}>Title *</Form.Label>
+                    <Col xs lg={2} sm={10}>
+                    <Form.Control name="title" ref={register({required:true})} />
+                    </Col>
+                    { errors.title && <Col xs lg={2} sm={10}>
+                        <span>This field is required</span>
+                    </Col> }
+                </Form.Group>
+
+                <Form.Group as={Row}  className="d-flex justify-content-center" >
+                    <Form.Label column sm={2}>Tags</Form.Label>
+                    <Col xs lg={2} sm={10}>
+                    <Button variant="outline-secondary" onClick={addTag} type="button" >add</Button>
+                    </Col>
+
+                </Form.Group>
+
                 {
                     tagState.map((Tag,index)=>{
-                        return(<div>
-                                <input name={`tags_posts_attributes[${index}].tag_attributes.name`}  key={index} ref={register({ required: true })}  />
-                                <button type="button" onClick={()=>DeleteTag(index)}>delete</button>
+                        return(<Form.Group as={Row}  className="d-flex justify-content-center" >
+                                <Col xs lg={2} sm={10}>
+                                    <Form.Control name={`tags_posts_attributes[${index}].tag_attributes.name`}  key={index} ref={register({ required: true })}  />
+                                </Col>
+                                <Col xs lg={2} sm={10}>
+                                    <Button variant="outline-danger" type="button" onClick={()=>DeleteTag(index)}>delete</Button>
+                                </Col>
 
-                            </div>
+                            </Form.Group>
                         )
                     })
                 }
-                <label htmlFor="category">Category *</label>
-                <input name="category" ref={register({ required: true })} />
-                {errors.name && <span>This field is required</span>}
-                <br/>
 
+                <Form.Group as={Row}  className="d-flex justify-content-center" >
+                    <Form.Label column sm={2}>category *</Form.Label>
+                    <Col xs lg={2} sm={10}>
+                        <Form.Control name="category" ref={register({required:true})} />
+                    </Col>
+                    {errors.category && <Col xs lg={2} sm={10}> This field is required </Col> }
+                </Form.Group>
 
-                <label htmlFor="content">Content *</label>
-                <textarea name="content" ref={register({ required: true })} />
-                {errors.name && <span>This field is required</span>}
-                <br/>
+                <Form.Group as={Row}  className="d-flex justify-content-center" >
+                    <Form.Label column sm={2}>content</Form.Label>
+                    <Col xs lg={2} sm={10}>
+                        <Form.Control as={"textarea"} name="content" ref={register({required:true})} />
+                    </Col>
+                    {errors.content && <Col xs lg={2} sm={10}>
+                        this field is required
+                    </Col>}
+                </Form.Group>
+
+                <Form.Group as={Row}  className="d-flex justify-content-center"  >
+                    <Form.Label column sm={2}>Images</Form.Label>
+                    <Col xs lg={2} sm={10}>
+                    <Form.Control type="file" onChange={e=>setFiles(Array.from(e.target.files))} multiple="multiple" name="avatars[]" ref={register({ })}  />
+                    </Col>
+                </Form.Group>
+
                 <input name="date_of_publication" hidden value={date} type={'text'} ref={register({ required: true })} />
-                {errors.date && <span>This field is required</span>}
-                <br/>
-
-                <p>Добавить файлы</p>
-                <input type={"file"} onChange={e=>setFiles(Array.from(e.target.files))} multiple="multiple" name="avatars[]" ref={register({ })}/>
 
                 <input name="user_id" hidden value={localStorage.getItem("id")} type={'text'} ref={register({ required: true })} />
+                <Form.Group as={Row}  className="d-flex justify-content-center"  >
+                <Col> <Button type="submit"  >send </Button> </Col>
+                </Form.Group>
 
 
-                <input type="submit" />
-            </form>
+            </Form>
+            </Container>
+
         </>
     )
 }

@@ -27,7 +27,7 @@ module Api
     def update
       @resource=resource_class.find(params[:id])
       @resource.assign_attributes(resource_params)
-      if @resource.save
+            if @resource.save
         render json: @resource.as_json(as_json_resource)
       else
         render json: {errors:@resource.errors}, status: :unprocessable_entity
