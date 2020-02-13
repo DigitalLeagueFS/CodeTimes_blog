@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { get, set, unset } from 'lodash';
+import {server} from "../../../actions/applicationConsts";
 
 export class XhrClient{
     constructor() {
@@ -7,7 +8,7 @@ export class XhrClient{
         this.client=axios.create(
             {
 
-                baseURL: 'http://127.0.0.1:3000/api',
+                baseURL: `${server}/api`,
                 headers:{
                     'Access-Control-Allow-Origin':'*',
                     'Authorization':`Bearer ${token}`

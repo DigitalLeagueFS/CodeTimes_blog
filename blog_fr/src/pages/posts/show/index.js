@@ -13,6 +13,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
+import {server} from "../../../actions/applicationConsts"
+import  {SetLike} from "../../../actions/Functions"
 
 
 
@@ -38,12 +40,7 @@ export default function ShowPost(props)
 
 
 
-    async function SetLike()
-    {
-        let res=await api.likes.create({post_id:post.id, user_id:localStorage.getItem("id"), created_at:new Date(), updated_at:new Date()})
-        setPost((await GetPost()).data)
 
-    }
 
     async function GetPost()
     {
@@ -72,13 +69,14 @@ export default function ShowPost(props)
                         created_at: new Date(),
                         updated_at: new Date()
                     });
-                    GetComments()
+                   await GetComments()
                 }
 
             }
             
             async function  GetComments() {
                 let comments=await api.comments.fetchAll({post_id:post.id});
+                console.log(comments.data)
                 setComments(comments.data)
             }
 
@@ -97,7 +95,7 @@ export default function ShowPost(props)
 
                 <p>{post.user && post.user.name}</p>
                 {post.user && post.user.avatar && <Card.Subtitle className="mb-2 text-muted">
-                    <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" />
+                    <img src={`${server}${post.user.avatar.url}`} height="50px" />
                 </Card.Subtitle>}
                 <Card.Text>{post.content}</Card.Text>
 
@@ -105,7 +103,7 @@ export default function ShowPost(props)
 
                 {post && <Row>
                     {post.avatars  && post.avatars.map((image,index)=>{
-                        return(<Col> <button style={TransButton} onClick={()=>setShow(`http://127.0.0.1:3000${image.url}`)}> <img src={`http://127.0.0.1:3000${image.url}`} max-height="400px" max-width="200px" /> </button>  </Col>)
+                        return(<Col> <button style={TransButton} onClick={()=>setShow(`${server}${image.url}`)}> <img src={`${server}${image.url}`} max-height="400px" max-width="200px" /> </button>  </Col>)
                     }) }
 
                     {isShow!=null && <Lightbox mainSrc={isShow} onCloseRequest={()=>setShow(null)}  />}
@@ -114,7 +112,7 @@ export default function ShowPost(props)
 
             <br/>
             <Row>
-                <Col>  <button disabled={like}  onClick={SetLike}>{like && <img src={likeImg} />} {like==false && <img   src={unlikeImg} />} </button></Col>
+                <Col>  <button disabled={like}  onClick={()=>SetLike(post,setLike,GetPost)}>{like && <img src={likeImg} />} {like==false && <img   src={unlikeImg} />} </button></Col>
                 <Col>   <p><img src={commentaryImg} />{post.comments_count}</p></Col>
 
             </Row>
@@ -126,19 +124,22 @@ export default function ShowPost(props)
             <button onClick={AddComment}>Add comment</button>
             <div>
                 {
-                    comments.map(function (comment,i)
+
+                   post.comments!=null   && post.comments.map(function (comment,i)
                     {
                         return(
 
                             <div className={"d-flex justify-content-center"}>
                             <Toast >
-                                <ToastHeader>{comment.user.name}</ToastHeader>
+
                                 <ToastBody>{comment.description}</ToastBody>
                             </Toast>
                             </div>
 
                         )
                     })
+
+
                 }
             </div>
 

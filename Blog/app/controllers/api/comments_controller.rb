@@ -2,6 +2,20 @@ module Api
   class CommentsController < ApiController
     before_action :authenticate_request!
 
+    def show
+      pp params
+      @resource=resource_class.all.find_by(post_id: params[:post_id])
+      render json: @resource.as_json(as_json_collection)
+    end
+
+
+    def index
+      @collection=resource_class.all.find_by(post_id: params[:post_id])
+      render json: @collection.as_json(as_json_collection)
+    end
+
+
+
     def create
       @resource=resource_class.new(resource_params)
       @resource.user_id=@current_user.id

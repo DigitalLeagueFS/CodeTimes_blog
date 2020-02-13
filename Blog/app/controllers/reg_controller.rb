@@ -1,5 +1,6 @@
 class RegController < ApplicationController
 
+  respond_to :json
   skip_before_action :verify_authenticity_token
   def create
     @user=User.new(user_params)
@@ -7,7 +8,8 @@ class RegController < ApplicationController
   end
 
   def getToken
-    render json: {csrf:form_authenticity_token}
+    data={:csrf=>form_authenticity_token}
+    render :json=>data
   end
 
   def user_params()

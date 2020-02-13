@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Container} from "react-bootstrap";
+import {server} from "../../../actions/applicationConsts";
 
 
 export default function NewPost() {
@@ -64,7 +65,7 @@ export default function NewPost() {
 
             let token=localStorage.getItem("token")
 
-            fetch(`http://127.0.0.1:3000/api/posts/`, {
+            fetch(`${server}/api/posts/`, {
                 method: 'POST',
                 headers: {'Authorization':`Bearer ${token}`},
                 body: formData
@@ -73,8 +74,6 @@ export default function NewPost() {
             data.images=files
             console.log(data)
 
-        //    let res = await api.posts.create(data);
-            //console.log(res.data);
 
         })();
     }

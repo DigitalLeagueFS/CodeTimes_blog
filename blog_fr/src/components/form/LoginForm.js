@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import {CardStyle} from "../../styles/styles";
+import {server} from "../../actions/applicationConsts";
 
 function LoginForm(props) {
     const [email, setEmail]=useState("")
@@ -20,7 +21,7 @@ function LoginForm(props) {
 
     const handleSubmit=(evt)=>{
         evt.preventDefault()
-       fetch(`http://localhost:3000/auth_user`,
+       fetch(`${server}/auth_user`,
             {
                 method:"POST",
                 headers:{

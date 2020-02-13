@@ -16,23 +16,19 @@ import {CardStyle} from "../../styles/styles"
 import likeImg from "../../images/like.png";
 import unlikeImg from "../../images/unlike.png"
 import commentaryImg from "../../images/commentary.png"
+import {server} from "../../actions/applicationConsts";
+import {getAll} from "../../actions/Functions";
 
  function Home(props) {
      let [posts, setPosts]=useState([])
          useEffect(() => {
              console.log(props.status)
              if(props.status===204) {
-                 getAll();
+                 getAll(setPosts);
              }
          }, [props.status]);
 
 
-     async function getAll() {
-             let res = await api.posts.fetchAll();
-             console.log(res.data)
-             setPosts(res.data);
-             return res;
-         }
 
 
     return (
@@ -46,7 +42,7 @@ import commentaryImg from "../../images/commentary.png"
 
                             <p>{post.user.name}</p>
                             {post.user && post.user.avatar && <Card.Subtitle className="mb-2 text-muted">
-                                <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" />
+                                <img src={`${server}${post.user.avatar.url}`} height="50px" />
                             </Card.Subtitle>}
                             <Card.Text>{post.content}</Card.Text>
                             <p><img src={unlikeImg} /> {post.likes_count}</p>

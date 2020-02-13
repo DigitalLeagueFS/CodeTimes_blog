@@ -13,6 +13,7 @@ import unlikeImg from "../../images/unlike.png"
 import commentaryImg from "../../images/commentary.png"
 import Card from "react-bootstrap/Card";
 import {CardStyle} from "../../styles/styles";
+import {server} from "../../actions/applicationConsts";
 
 function Room(){
     const { register, handleSubmit, watch, errors } = useForm();
@@ -50,7 +51,7 @@ function Room(){
 
 
 
-               fetch(`http://127.0.0.1:3000/api/users/${user.id}`, {
+               fetch(`${server}/api/users/${user.id}`, {
                     method: 'put',
                     headers: {'Authorization':`Bearer ${token}`},
                     body: formData
@@ -80,7 +81,7 @@ function Room(){
             <Form style={CardStyle}  onSubmit={handleSubmit(OnSubmit)}>
 
                 {user.avatar &&  <Form.Group as={Row} className={"d-flex justify-content-center"}>
-                    <img src={`http://127.0.0.1:3000${user.avatar.url}`} height="50px" />
+                    <img src={`${server}${user.avatar.url}`} height="50px" />
                 </Form.Group> }
 
                 <Form.Group  as={Row} className="d-flex justify-content-center   ">
@@ -146,7 +147,7 @@ function Room(){
                                 </Card.Header>
                                 <p>{post.user.name}</p>
                                 {post.user && post.user.avatar && <Card.Subtitle className="mb-2 text-muted">
-                                    <img src={`http://127.0.0.1:3000${post.user.avatar.url}`} height="50px" />
+                                    <img src={`${server}${post.user.avatar.url}`} height="50px" />
                                 </Card.Subtitle>}
                                 <Card.Text>{post.content}</Card.Text>
                                 <p><img src={unlikeImg} /> {post.likes_count}</p>

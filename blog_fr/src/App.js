@@ -17,6 +17,7 @@ import{
     Route,
     Link
 } from "react-router-dom";
+import {server} from "./actions/applicationConsts";
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
 
   useEffect(()=>{
     const token=localStorage.getItem("token")
-      fetch(`http://localhost:3000/auth`,{
+      fetch(`${server}/auth`,{
         headers:{
           Authorization:`Bearer ${token}`
         }

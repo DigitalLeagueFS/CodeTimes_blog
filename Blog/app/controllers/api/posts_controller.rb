@@ -66,7 +66,8 @@ class PostsController < ApiController
         include:{
             like:{only:[:user_id]},
             category:{only:[:name]},
-            user: {only:[:name,:avatar,:id] }
+            user: {only:[:name,:avatar,:id] },
+        comments:{only:[:description,:user_id]}
         }
 
     }

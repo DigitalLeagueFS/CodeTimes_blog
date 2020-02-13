@@ -9,6 +9,7 @@ module Api
    end
 
     def show
+      pp params
       @resource=resource_class.find(params[:id])
       render json: @resource.as_json(as_json_resource)
     end

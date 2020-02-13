@@ -8,6 +8,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import {CardStyle} from "../../../styles/styles";
+import {server} from "../../../actions/applicationConsts";
+import {GetTags} from "../../../actions/Functions";
 
 export default function EditPost(props)
 {
@@ -38,7 +40,7 @@ export default function EditPost(props)
     useEffect(
         ()=>{
             if(Object.keys(post).length!=0)
-            GetTags()
+            GetTags(post,setTags)
 
 
 
@@ -51,8 +53,6 @@ export default function EditPost(props)
      setTagState([])
         tags.map(
             (async (TagsPost,i)=> {
-
-
                 let t= TagsPost.tag_id
                 t=await api.tags.show({id:t})
                 t.data.ex="Yes"
@@ -67,13 +67,7 @@ export default function EditPost(props)
        console.log(tagState)
     },[tagState])
 
-    async function GetTags()
-    {
-        let tagsPosts=await api.tagsPost.fetchAll({post_id:post.id})
-        setTags(tagsPosts.data)
 
-
-    }
 
     async function GetPost()
     {
@@ -120,7 +114,7 @@ export default function EditPost(props)
 
             let token=localStorage.getItem("token")
 
-            fetch(`http://127.0.0.1:3000/api/posts/${post.id}`, {
+            fetch(`${server}/api/posts/${post.id}`, {
                 method: 'put',
                 headers: {'Authorization':`Bearer ${token}`,     'Access-Control-Allow-Origin':'*'},
                 body: formData
@@ -148,7 +142,7 @@ export default function EditPost(props)
         data.append("post[post_id]",post.id)
         data.append("post[avatar_id]",index)
         let token=localStorage.getItem("token")
-        fetch(`http://127.0.0.1:3000/api/posts/deleteImage`, {
+        fetch(`${server}/api/posts/deleteImage`, {
             method: 'POST',
             headers: {'Authorization':`Bearer ${token}`},
             body: data
@@ -219,7 +213,7 @@ export default function EditPost(props)
 
                     {post && post.avatars && post.avatars.map((image,index)=>{
                         return(<Row className="d-flex justify-content-center   ">
-                            <img src={`http://127.0.0.1:3000${image.url}`} height="100px" width="200px" />
+                            <img src={`${server}${image.url}`} height="100px" width="200px" />
                             <Button type="button" variant="outline-danger" onClick={()=>deleteImage(index)}>delete</Button>
 
                         </Row>)

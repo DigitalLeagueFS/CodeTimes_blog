@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, {useEffect, useState} from "react";
 import Form from "react-bootstrap/Form";
 import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
 import Row from "react-bootstrap/Row";
@@ -7,6 +7,7 @@ import Button from "react-bootstrap/Button";
 import {CardStyle} from "../../styles/styles";
 import api from "../../services/api"
 import axios from 'axios'
+import {server} from "../../actions/applicationConsts";
 
 function SignInForm(props) {
     const[email,setEmail]=useState("")
@@ -27,26 +28,30 @@ function SignInForm(props) {
       // let c= await api.users.create({email:email,password:password})
 
         await axios.post(
-            "http://localhost:3000/getToken"
+            `${server}/getToken`
         ).then(res=>setCsrf(res.data.csrf))
-
      //   let token = document.getElementsByName('csrf-token')[0].getAttribute('content')
+
+
+    }
+
+    useEffect(async()=>
+    {
 
         axios.defaults.headers.common['X-Csrf-Token'] = csrf
         axios.defaults.headers.common['Accept'] = 'application/json'
         axios.defaults.headers.common ['Access-Control-Allow-Origin']='*'
 
-       await axios.post('http://localhost:3000/users', {
+        await axios.post(`${server}/users`, {
             user: {
                 email: email,
                 password: password
             }
         })
             .then(response => {
-               console.log(response)
+                console.log(response)
             })
-
-    }
+    },[ JSON.stringify(csrf)])
 
 
 
