@@ -32,8 +32,6 @@ export default function ShowPost(props)
             setPost(resp.data)
 
         })
-        GetComments()
-        console.log(post)
     },[JSON.stringify(post)] )
 
 
@@ -69,16 +67,14 @@ export default function ShowPost(props)
                         created_at: new Date(),
                         updated_at: new Date()
                     });
-                   await GetComments()
+                    setPost( await GetPost().data)
                 }
+                setPost( await GetPost().data)
+
 
             }
             
-            async function  GetComments() {
-                let comments=await api.comments.fetchAll({post_id:post.id});
-                console.log(comments.data)
-                setComments(comments.data)
-            }
+
 
     const handleTextareaChange=e=>{
         setComment(e.target.value)
@@ -90,34 +86,41 @@ export default function ShowPost(props)
     return(
 
         <Container style={CardStyle}>
-            <Card style={CardStyle}>
+            {post && <Card style={CardStyle}>
                 <Card.Header>{post.title} </Card.Header>
 
                 <p>{post.user && post.user.name}</p>
                 {post.user && post.user.avatar && <Card.Subtitle className="mb-2 text-muted">
-                    <img src={`${server}${post.user.avatar.url}`} height="50px" />
+                    <img src={`${server}${post.user.avatar.url}`} height="50px"/>
                 </Card.Subtitle>}
                 <Card.Text>{post.content}</Card.Text>
 
 
-
                 {post && <Row>
-                    {post.avatars  && post.avatars.map((image,index)=>{
-                        return(<Col> <button style={TransButton} onClick={()=>setShow(`${server}${image.url}`)}> <img src={`${server}${image.url}`} max-height="400px" max-width="200px" /> </button>  </Col>)
-                    }) }
+                    {post.avatars && post.avatars.map((image, index) => {
+                        return (<Col>
+                            <button style={TransButton} onClick={() => setShow(`${server}${image.url}`)}><img
+                                src={`${server}${image.url}`} max-height="400px" max-width="200px"/></button>
+                        </Col>)
+                    })}
 
-                    {isShow!=null && <Lightbox mainSrc={isShow} onCloseRequest={()=>setShow(null)}  />}
+                    {isShow != null && <Lightbox mainSrc={isShow} onCloseRequest={() => setShow(null)}/>}
 
                 </Row>}
 
-            <br/>
-            <Row>
-                <Col>  <button disabled={like}  onClick={()=>SetLike(post,setLike,GetPost)}>{like && <img src={likeImg} />} {like==false && <img   src={unlikeImg} />} </button></Col>
-                <Col>   <p><img src={commentaryImg} />{post.comments_count}</p></Col>
+                <br/>
+                {post && <Row>
+                    <Col>
+                        <button disabled={like} onClick={() => SetLike(post, setLike, GetPost)}>{like &&
+                        <img src={likeImg}/>} {like == false && <img src={unlikeImg}/>} </button>
+                    </Col>
+                    <Col><p><img src={commentaryImg}/>{post.comments_count}</p></Col>
 
-            </Row>
+                </Row>
+                }
 
             </Card>
+            }
             <textarea cols="100" onChange={handleTextareaChange}></textarea>
             <br/>
 
@@ -125,15 +128,14 @@ export default function ShowPost(props)
             <div>
                 {
 
-                   post.comments!=null   && post.comments.map(function (comment,i)
-                    {
-                        return(
+                  post &&  post.comments != null && post.comments.map(function (comment, i) {
+                        return (
 
                             <div className={"d-flex justify-content-center"}>
-                            <Toast >
+                                <Toast>
 
-                                <ToastBody>{comment.description}</ToastBody>
-                            </Toast>
+                                    <ToastBody>{comment.description}</ToastBody>
+                                </Toast>
                             </div>
 
                         )
@@ -144,10 +146,8 @@ export default function ShowPost(props)
             </div>
 
 
-
-
-
         </Container>
+
 
     )
 }
