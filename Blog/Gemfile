@@ -60,4 +60,4 @@ gem 'rack-cors'
 gem 'jwt'
 
 #files
-gem 'carrierwave', '~> 2.0'
+gem 'carrierwave', '~> 2.1'
